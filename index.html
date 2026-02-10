@@ -1,0 +1,48 @@
+
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR scanner</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      #qrvid {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+      }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  </head>
+  <body>
+    <dialog id="qrDialog">
+        <article>
+            <a id="qrContent"></a>
+        </article>
+    </dialog>
+    <video id="qrvid"></video>
+  </body>
+
+  <script type="module">
+    import QrScanner from './lib/qr-scanner.min.js';
+
+    const qrVid = document.getElementById("qrvid");
+    const qrContent = document.getElementById("qrContent");
+    const qrDialog = document.getElementById("qrDialog");
+
+    qrDialog.addEventListener("click", () => qrDialog.open = false);
+
+    const qrScanner = new QrScanner(
+        qrVid, result => {
+            qrDialog.open = true;
+            qrContent.innerHTML = result.data;
+            qrContent.href = result.data;
+        },
+        {returnDetailedScanResult: true},
+    );
+
+    qrScanner.start();
+  </script>
+</html>
+
